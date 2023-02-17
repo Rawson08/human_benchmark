@@ -1,5 +1,5 @@
 .button {
-    -fx-background-color: yellow;
+    -fx-background-color: #d7d74a;
     -fx-font-size: 16;
     -fx-pref-width: 120;
     -fx-pref-height: 40;
@@ -8,7 +8,7 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
 }
 .button:hover {
-    -fx-background-color: #C0C0C0;
+    -fx-background-color: #f6f6f6;
     -fx-font-size: 16;
     -fx-pref-width: 120;
     -fx-pref-height: 40;
