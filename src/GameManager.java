@@ -2,8 +2,8 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.*;
@@ -23,11 +23,13 @@ import java.util.Optional;
 public class GameManager extends Application {
     private String userName;
     private BorderPane root;
+    private Scene scene;
     private boolean nameTaken = false;
 
     public static void main(String[] args) {launch(args);}
 
 
+    //Drawing the top logo using Path. The co-ordinate was extracted from the website using inspect element.
     private static Node mainLogo() {
         Path path = new Path();
         path.setFill(Color.WHITE);
@@ -72,31 +74,41 @@ public class GameManager extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Human Benchmark");
         root = new BorderPane();
-        Scene scene = new Scene(root,800, 900);
+        Button back = new Button("Back");
+        back.setLayoutY(10);
+        back.setPrefSize(50, 30);
+        back.setOnMouseEntered(e -> {
+            back.setTranslateY(-5);
+            back.setTextFill(Color.RED);
+        });
+        back.setOnMouseExited(e -> {
+            back.setTranslateY(0);
+            back.setTextFill(Color.BLACK);
+        });
+        back.setOnAction(event -> scene.setRoot(root));
+        scene = new Scene(root,800, 900);
 
         String[] names = {"Reaction Time", "Sequence Memory", "Aim Trainer", "Number Memory",
                 "Verbal Memory", "Chimp Test", "Visual Memory", "Typing", "Unnamed"};
         Button[] buttons = new Button[9];
-        Button back = new Button("<-");
-        back.setOnAction(event -> {
-            Scene scene1 = new Scene(getRoot(), 800, 900);
-            primaryStage.setScene(scene1);
-            primaryStage.show();
-        });
 
 
 
+        //Tile implementation for the game buttons
         FlowPane buttonPane = new FlowPane();
         buttonPane.setPadding(new Insets(10));
         buttonPane.setVgap(10);
         buttonPane.setHgap(10);
         buttonPane.setAlignment(Pos.CENTER);
 
+        //Creating 9 buttons using for-loop and setting text using String[] names
         for (int i = 0; i < 9; i++) {
             buttons[i] = new Button(names[i]);
             buttons[i].setId(names[i]);
             buttons[i].setPrefSize(180, 155);
             buttons[i].setFont(Font.font("Arial", FontWeight.BOLD, 16));
+
+            //Transition effect in the buttons when mouse hovered and unhovered
             int finalI = i;
             buttons[i].setOnMouseEntered(e -> {
                 buttons[finalI].setTranslateY(-10);
@@ -111,81 +123,86 @@ public class GameManager extends Application {
             buttons[i].setOnAction(event -> takeUsername());
         }
 
-
+        //ReactionTime game button action implementation to load ReactionTime class
         buttons[0].setOnAction(event -> {
-
             if (!nameTaken){takeUsername();}
             ReactionTime reactionTime = new ReactionTime();
             reactionTime.injectBackButton(back);
-            Scene scene01 = new Scene(reactionTime.getRoot(), 800, 900);
-            primaryStage.setScene(scene01);
-            primaryStage.show();
+            scene.setRoot(reactionTime.getRoot());
         });
 
+        //SequenceMemory game button action implementation to load SequenceMemory class
         buttons[1].setOnAction(event -> {
             if (!nameTaken){takeUsername();}
             SequenceMemory sequenceMemory = new SequenceMemory(100,100);
             sequenceMemory.injectBackButton(back);
-            Scene scn = new Scene(sequenceMemory.getRoot(), 800, 900);
-            primaryStage.setScene(scn);
-            primaryStage.show();
+            scene.setRoot(sequenceMemory.getRoot());
         });
 
+        //AimTrainer game button action implementation to load AimTrainer class
         buttons[2].setOnAction(event -> {
             if (!nameTaken){takeUsername();}
             AimTrainer aimTrainer = new AimTrainer(10);
             aimTrainer.injectBackButton(back);
-            Scene scene1 = new Scene(aimTrainer.getRoot(), 800, 900);
-            primaryStage.setScene(scene1);
-            primaryStage.show();
+            scene.setRoot(aimTrainer.getRoot());
+
         });
 
+        //NumberMemory game button action implementation to load NumberMemory class
         buttons[3].setOnAction(event -> {
             if (!nameTaken){takeUsername();}
             NumberMemory numberMemory = new NumberMemory();
             numberMemory.injectBackButton(back);
-            Scene scene1 = new Scene(numberMemory.getRoot(), 800, 900);
-            primaryStage.setScene(scene1);
-            primaryStage.show();
+            scene.setRoot(numberMemory.getRoot());
+
         });
 
+        //VerbalMemoryTest game button action implementation to load VerbalMemoryTest class
         buttons[4].setOnAction(event -> {
             if (!nameTaken){takeUsername();}
-            VisualMemoryTest visualMemoryTest = new VisualMemoryTest();
-            visualMemoryTest.injectBackButton(back);
-            Scene scene1 = new Scene(visualMemoryTest.getRoot(), 800, 900);
-            primaryStage.setScene(scene1);
-            primaryStage.show();
+            VerbalMemoryTest verbalMemoryTest = new VerbalMemoryTest();
+            verbalMemoryTest.injectBackButton(back);
+            scene.setRoot(verbalMemoryTest.getRoot());
+
         });
 
+        //ChimpTest game button action implementation to load ChimpTest class
         buttons[5].setOnAction(event -> {
             if (!nameTaken){takeUsername();}
             ChimpTest chimpTest = new ChimpTest();
             chimpTest.injectBackButton(back);
-            Scene scene1 = new Scene(chimpTest.getRoot(), 800, 900);
-            primaryStage.setScene(scene1);
-            primaryStage.show();
+            scene.setRoot(chimpTest.getRoot());
+
         });
 
+        //VisualMemoryTest game button action implementation to load VisualMemoryTest class
         buttons[6].setOnAction(event -> {
             if (!nameTaken){takeUsername();}
-            VerbalMemoryTest verbalMemoryTest = new VerbalMemoryTest();
-            verbalMemoryTest.injectBackButton(back);
-            Scene scene1 = new Scene(verbalMemoryTest.getRoot(), 800, 900);
-            primaryStage.setScene(scene1);
-            primaryStage.show();
+            VisualMemoryTest visualMemoryTest = new VisualMemoryTest();
+            visualMemoryTest.injectBackButton(back);
+            scene.setRoot(visualMemoryTest.getRoot());
+
         });
 
 
+        //TypingGame game button action implementation to load TypingGame class
         buttons[7].setOnAction(event -> {
             if (!nameTaken){takeUsername();}
             TypingGame typingGame = new TypingGame();
             typingGame.injectBackButton(back);
-            Scene scene1 = new Scene(typingGame.getRoot(), 800, 900);
-            primaryStage.setScene(scene1);
-            primaryStage.show();
+            scene.setRoot(typingGame.getRoot());
         });
 
+
+        //DemoGame game button action implementation to load DemoGame class
+        buttons[8].setOnAction(event -> {
+            if (!nameTaken){takeUsername();}
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Attention!");
+            alert.setHeaderText(null);
+            alert.setContentText("I am really sorry, " + userName + ". I am still working on this game.");
+            alert.showAndWait();
+        });
 
 
         //VBox for the top part of main screen with title and subtitle texts
@@ -223,8 +240,16 @@ public class GameManager extends Application {
 
         //Taking username from the "Get Started" button
         getStartedButton.setOnAction(event -> {
-            nameTaken = true;
-            takeUsername();
+            if (nameTaken){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Attention!");
+                alert.setHeaderText(null);
+                alert.setContentText("Welcome again, " + userName + ". Click on any game to play.");
+                alert.showAndWait();
+            }
+            else{
+                takeUsername();
+            }
         });
 
         topHalf.getStylesheets().add(Objects.requireNonNull(getClass().getResource("button-styles.css")).toExternalForm());
@@ -243,23 +268,27 @@ public class GameManager extends Application {
         primaryStage.show();
     }
 
-    private Parent getRoot() {
+    public Pane getRoot() {
         return root;
     }
 
 
     private String takeUsername() {
+        nameTaken = true;
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Welcome! Enter you name to continue");
         dialog.setHeaderText("Enter your name to get started!");
         dialog.setContentText("Please enter your name:");
+        dialog.onCloseRequestProperty();
+
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> userName = name);
-//        dialog.setOnCloseRequest(event -> takeToMainScreen());
+        System.out.println(userName);
         return userName;
     }
 
     private void takeToMainScreen() {
-        System.out.println("pressed back");
+        scene.setRoot(root);
+        System.out.println("pressed cancel");
     }
 }
