@@ -1,3 +1,8 @@
+/* Human Benchmark Game
+ * Roshan Subedi
+ * CS351
+ * */
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.LongProperty;
