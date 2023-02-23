@@ -1,11 +1,10 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -131,13 +130,13 @@ public class GameManager extends Application {
             scene.setRoot(reactionTime.getRoot());
         });
 
-        //SequenceMemory game button action implementation to load SequenceMemory class
-        buttons[1].setOnAction(event -> {
-            if (!nameTaken){takeUsername();}
-            SequenceMemory sequenceMemory = new SequenceMemory(100,100);
-            sequenceMemory.injectBackButton(back);
-            scene.setRoot(sequenceMemory.getRoot());
-        });
+//        SequenceMemory game button action implementation to load SequenceMemory class
+//        buttons[1].setOnAction(event -> {
+//            if (!nameTaken){takeUsername();}
+//            SequenceMemory sequenceMemory = new SequenceMemory();
+//            sequenceMemory.injectBackButton(back);
+//            scene.setRoot(sequenceMemory.getRoot());
+//        });
 
         //AimTrainer game button action implementation to load AimTrainer class
         buttons[2].setOnAction(event -> {
@@ -275,20 +274,28 @@ public class GameManager extends Application {
 
     private String takeUsername() {
         nameTaken = true;
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Welcome! Enter you name to continue");
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Welcome! Enter your name to continue");
         dialog.setHeaderText("Enter your name to get started!");
-        dialog.setContentText("Please enter your name:");
-        dialog.onCloseRequestProperty();
-
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        TextField textField = new TextField();
+        textField.setPromptText("Please enter your name");
+        dialog.getDialogPane().setContent(textField);
+        Platform.runLater(textField::requestFocus);
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                return textField.getText();
+            }
+            return null;
+        });
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> userName = name);
         System.out.println(userName);
         return userName;
     }
 
+
     private void takeToMainScreen() {
-        scene.setRoot(root);
-        System.out.println("pressed cancel");
+
     }
 }
