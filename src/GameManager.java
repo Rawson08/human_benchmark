@@ -1,3 +1,8 @@
+/* Human Benchmark Game
+ * Roshan Subedi
+ * CS351
+ * */
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -88,7 +93,7 @@ public class GameManager extends Application {
         scene = new Scene(root,800, 900);
 
         String[] names = {"Reaction Time", "Sequence Memory", "Aim Trainer", "Number Memory",
-                "Verbal Memory", "Chimp Test", "Visual Memory", "Typing", "Unnamed"};
+                "Verbal Memory", "Chimp Test", "Visual Memory", "Typing", "Hit Me!"};
         Button[] buttons = new Button[9];
 
 
@@ -196,6 +201,9 @@ public class GameManager extends Application {
         //DemoGame game button action implementation to load DemoGame class
         buttons[8].setOnAction(event -> {
             if (!nameTaken){takeUsername();}
+//            DotClick dotClick = new DotClick();
+//            dotClick.injectBackButton(back);
+//            scene.setRoot(dotClick.getRoot());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Attention!");
             alert.setHeaderText(null);
@@ -294,8 +302,4 @@ public class GameManager extends Application {
         return userName;
     }
 
-
-    private void takeToMainScreen() {
-
-    }
 }
